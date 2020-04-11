@@ -11,15 +11,16 @@
           integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 </head>
 <body>
+@include('taskbar');
 <div class="d-flex justify-content-center">
-    <form action="user/login" method="post">
+    <form action="{{ route('login.check') }}" method="post">
         <input type = "hidden" name = "_token" value = "<?php echo csrf_token(); ?>">
         <br><br>
         <h1>Login</h1>
         <br><br><br>
-        <label>Login<br><input type="email" placeholder="Email" name="login"></label>
+        <label>Login<br><input type="email" placeholder="Email" name="login" required></label>
         <br>
-        <label>Password<br><input type="password" name="password"></label>
+        <label>Password<br><input type="password" name="password" required></label>
         <br>
         <input type="submit">
     </form>

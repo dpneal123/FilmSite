@@ -11,56 +11,64 @@
           integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 </head>
 <body>
+@include('taskbar');
+<form>
+    <?php use Illuminate\Support\Facades\DB;use Illuminate\Support\Facades\Session;?>
+    <input type = "hidden" name = "_token" value = "<?php echo csrf_token(); ?>">
 <div class="row">
     <div class="col"></div>
     <div class="col">
         <br>
         <center><h1>Account</h1></center>
-        <br><br>
+        <br>
+        <?php
+        (new \App\UserModel)->show();
+        ?>
+        <br>
 <div class="row">
     <label class="label col-md control-label">Name
-        <input type="text" class="form-control" name="name" placeholder="Name">
+        <input type="text" class="form-control" name="name" placeholder="Name" value="<?php echo htmlentities(Session::get('username')); ?>" readonly>
     </label>
 </div>
 
 <div class="row">
     <label class="label col-md control-label">Phone
-        <input type="tel" class="form-control" name="phone" placeholder="Phone">
+        <input type="tel" class="form-control" name="phone" placeholder="Phone" value="<?php echo htmlentities(Session::get('userphone')); ?>" readonly>
     </label>
 </div>
 
 <div class="row">
     <label class="label col-md control-label">Email
-        <input type="email" class="form-control" name="email" placeholder="you@domain.com">
-    </label>
-</div>
-
-<div class="row">
-    <label class="label col-md control-label">Password
-        <input type="password" class="form-control" name="password" placeholder="Password">
+        <input type="email" class="form-control" name="email" placeholder="you@domain.com" value="<?php echo htmlentities(Session::get('useremail')); ?>" readonly>
     </label>
 </div>
 
 <div class="row">
     <label class="label col-md control-label">Street
-        <input type="text" class="form-control" name="street" placeholder="123 Fake Street">
+        <input type="text" class="form-control" name="street" placeholder="Street" value="<?php echo htmlentities(Session::get('userstreet')); ?>" readonly>
     </label>
 </div>
 
 <div class="row">
     <label class="label col-md control-label">City
-        <input type="text" class="form-control" name="city" placeholder="City">
+        <input type="text" class="form-control" name="city" placeholder="City" value="<?php echo htmlentities(Session::get('usercity')); ?>" readonly>
     </label>
 </div>
 
 <div class="row">
     <label class="label col-md control-label">Postcode
-        <input type="text" class="form-control" name="postcode" placeholder="Postcode">
+        <input type="text" class="form-control" name="postcode" placeholder="Postcode" value="<?php echo htmlentities(Session::get('userpostcode')); ?>" readonly>
     </label>
 </div>
-
+        <?php if (Session::exists('id')) { ?>
+        <div class="row">
+            <a class="btn btn-secondary" href="{{ URL::route('account.edit') }}">Edit</a>
+        </div>
+        <?php } ?>
     </div>
     <div class="col"></div>
+</div>
+    </form>
 </div>
 
 <!-- Optional JavaScript -->

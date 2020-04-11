@@ -11,10 +11,11 @@
           integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 </head>
 <body>
+@include('taskbar');
 <br><br>
 <div class="row">
     <div class="col"></div>
-<form action="user/register" method="post">
+<form action="/user/register" method="post">
 
     <input type = "hidden" name = "_token" value = "<?php echo csrf_token(); ?>">
 
@@ -26,37 +27,37 @@
         <h1>Register</h1>
         <div class="row">
             <label class="label col-md control-label">Name
-                <input type="text" class="form-control" name="name" placeholder="Name">
+                <input type="text" class="form-control" name="name" placeholder="Name" required>
             </label>
         </div>
 
         <div class="row">
             <label class="label col-md control-label">Phone
-                <input type="tel" class="form-control" name="phone" placeholder="Phone">
+                <input type="tel" class="form-control" name="phone" placeholder="Phone" required>
             </label>
         </div>
 
         <div class="row">
             <label class="label col-md control-label">Email
-                <input type="email" class="form-control" name="email" placeholder="you@domain.com">
+                <input type="email" class="form-control" name="email" placeholder="you@domain.com" required>
             </label>
         </div>
 
         <div class="row">
             <label class="label col-md control-label">Password
-                <input type="password" class="form-control" name="password" placeholder="Password">
+                <input type="password" class="form-control" name="password" placeholder="Password" required>
             </label>
         </div>
 
         <div class="row">
             <label class="label col-md control-label">Street
-                <input type="text" class="form-control" name="street" placeholder="123 Fake Street">
+                <input type="text" class="form-control" name="street" placeholder="Street" required>
             </label>
         </div>
 
         <div class="row">
             <label class="label col-md control-label">City
-                <input type="text" class="form-control" name="city" placeholder="City">
+                <input type="text" class="form-control" name="city" placeholder="City" required>
             </label>
         </div>
 
