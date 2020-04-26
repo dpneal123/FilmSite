@@ -18,7 +18,7 @@
 <div class="row">
     <div class="col"></div>
     <div class="col">
-        <br>
+        <br><br>
         <center><h1>Account</h1></center>
         <br>
         <?php
@@ -27,13 +27,13 @@
         <br>
 <div class="row">
     <label class="label col-md control-label">Name
-        <input type="text" class="form-control" name="name" placeholder="Name" value="<?php echo htmlentities(Session::get('username')); ?>" readonly>
+        <input type="text" class="form-control" name="name" placeholder="Name" pattern="[A-Za-z\s]+" value="<?php echo htmlentities(Session::get('username')); ?>" readonly>
     </label>
 </div>
 
 <div class="row">
     <label class="label col-md control-label">Phone
-        <input type="tel" class="form-control" name="phone" placeholder="Phone" value="<?php echo htmlentities(Session::get('userphone')); ?>" readonly>
+        <input type="tel" class="form-control" name="phone" placeholder="Phone" pattern="^\s*\(?(020[7,8]{1}\)?[ ]?[1-9]{1}[0-9{2}[ ]?[0-9]{4})|(0[1-8]{1}[0-9]{3}\)?[ ]?[1-9]{1}[0-9]{2}[ ]?[0-9]{3})\s*$" value="<?php echo htmlentities(Session::get('userphone')); ?>" readonly>
     </label>
 </div>
 
@@ -45,24 +45,26 @@
 
 <div class="row">
     <label class="label col-md control-label">Street
-        <input type="text" class="form-control" name="street" placeholder="Street" value="<?php echo htmlentities(Session::get('userstreet')); ?>" readonly>
+        <input type="text" class="form-control" name="street" placeholder="Street" pattern="[0-9A-Za-z\s]+" value="<?php echo htmlentities(Session::get('userstreet')); ?>" readonly>
     </label>
 </div>
 
 <div class="row">
     <label class="label col-md control-label">City
-        <input type="text" class="form-control" name="city" placeholder="City" value="<?php echo htmlentities(Session::get('usercity')); ?>" readonly>
+        <input type="text" class="form-control" name="city" placeholder="City" pattern="[A-Za-z\s]+" value="<?php echo htmlentities(Session::get('usercity')); ?>" readonly>
     </label>
 </div>
 
 <div class="row">
     <label class="label col-md control-label">Postcode
-        <input type="text" class="form-control" name="postcode" placeholder="Postcode" value="<?php echo htmlentities(Session::get('userpostcode')); ?>" readonly>
+        <input type="text" class="form-control" name="postcode" placeholder="Postcode" pattern="[A-Za-z]{1,2}[0-9Rr][0-9A-Za-z]? [0-9][ABD-HJLNP-UW-Zabd-hjlnp-uw-z]{2}" value="<?php echo htmlentities(Session::get('userpostcode')); ?>" readonly>
     </label>
 </div>
         <?php if (Session::exists('id')) { ?>
         <div class="row">
             <a class="btn btn-secondary" href="{{ URL::route('account.edit') }}">Edit</a>
+            <a class="btn btn-secondary" href="/account/history">Purchase History</a>
+            <a class="btn btn-secondary" href="{{ URL::route('card.update') }}">Card Details</a>
         </div>
         <?php } ?>
     </div>

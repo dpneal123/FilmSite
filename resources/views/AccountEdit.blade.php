@@ -32,7 +32,7 @@
 
             <div class="row">
                 <label class="label col-md control-label">Phone
-                    <input type="tel" class="form-control" name="phone" placeholder="Phone" value="<?php echo htmlentities(Session::get('userphone')); ?>" required>
+                    <input type="tel" class="form-control" name="phone" placeholder="Phone" pattern="^\s*\(?(020[7,8]{1}\)?[ ]?[1-9]{1}[0-9{2}[ ]?[0-9]{4})|(0[1-8]{1}[0-9]{3}\)?[ ]?[1-9]{1}[0-9]{2}[ ]?[0-9]{3})\s*$" value="<?php echo htmlentities(Session::get('userphone')); ?>" required>
                 </label>
             </div>
 
@@ -56,7 +56,7 @@
 
             <div class="row">
                 <label class="label col-md control-label">Postcode
-                    <input type="text" class="form-control" name="postcode" placeholder="Postcode" pattern="[A-Za-z0-9\s]+{8}" value="<?php echo htmlentities(Session::get('userpostcode')); ?>" required>
+                    <input type="text" class="form-control" name="postcode" placeholder="Postcode" pattern="[A-Za-z]{1,2}[0-9Rr][0-9A-Za-z]? [0-9][ABD-HJLNP-UW-Zabd-hjlnp-uw-z]{2}" value="<?php echo htmlentities(Session::get('userpostcode')); ?>" required>
                 </label>
             </div>
             <div class="row">

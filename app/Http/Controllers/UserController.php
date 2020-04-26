@@ -17,6 +17,7 @@ use Illuminate\Support\Facades\View;
 class UserController extends Controller
 {
     public function insert(\Illuminate\Http\Request $request) {
+        Session::start();
         $name = $request->input('name');
         $phone = $request->input('phone');
         $email = $request->input('email');
@@ -26,11 +27,14 @@ class UserController extends Controller
         $postcode = $request->input('postcode');
 
         (new \App\UserModel)->insertToDB($name, $email, $phone, $password, $street, $city, $postcode);
+        return \redirect()->route('account.insert');
     }
 
     public function check(\Illuminate\Http\Request $request) {
         $login = $request->input('login');
         $password = $request->input('password');
+
+        Session::put('email', $login);
 
         (new UserModel)->checkDB($login, $password);
         return redirect()->route('films');
@@ -67,5 +71,33 @@ class UserController extends Controller
         }
         (new UserModel)->edituser();
         return redirect()->route('account');
+    }
+
+    public function gethistory() {
+        return view('AccountHistory');
+    }
+
+    public function getcard() {
+        (new \App\UserModel)->carddetails();
+    }
+
+    public function insertcard() {
+        $cardno = $_POST['cardno'];
+        $ctype = $_POST['ctype'];
+        $expmonth = $_POST['expmonth'];
+        $expyear = $_POST['expyear'];
+        $expdate = $expmonth . ':' . $expyear;
+        (new \App\UserModel)->insertcard($cardno, $ctype, $expdate);
+        return \redirect()->route('films');
+    }
+
+    public function updatecard() {
+        $cardno = $_POST['cardno'];
+        $ctype = $_POST['ctype'];
+        $expmonth = $_POST['expmonth'];
+        $expyear = $_POST['expyear'];
+        $expdate = $expmonth . ':' . $expyear;
+        (new \App\UserModel)->insertcard($cardno, $ctype, $expdate);
+        return \redirect()->route('films');
     }
 }

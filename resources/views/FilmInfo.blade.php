@@ -28,7 +28,7 @@
     echo "<br><br>";
     echo $currentfilm->filmdescription;
     echo "<br><br>";
-    echo "£" . (new FilmsModel)->getprice($id);
+    echo "£" . $currentfilm->price;
 ?>
     <br><br>
     <input type="submit" class="btn btn-primary" value="Add to Basket">

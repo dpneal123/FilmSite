@@ -10,11 +10,14 @@
 </head>
 <body>
 @include('taskbar');
-<br><br>
+<br><br><br>
 <div class="col">
     <div class="row">
         <div class="col-1"></div>
         <div class="col">
+            <center>
+            <h1>Film List</h1>
+            </center>
             <?php
             use App\FilmsModel;use Illuminate\Support\Facades\DB;
             (new FilmsModel())->getall();

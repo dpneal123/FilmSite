@@ -23,13 +23,14 @@ class UserModel extends Model
         $phonecheck = DB::table('fss_Person')->where('personphone', $phone)->pluck('personphone');
         if($emailcheck != '[]') {
             echo 'Email is already registered';
-            echo $emailcheck;
         } else if ($phonecheck != '[]') {
             echo 'Phone is already registered';
         } else {
             $personid = DB::table('fss_Person')->insertGetId(
                 ['personname' => $name, 'personemail' => $email, 'personphone' => $phone]
             );
+
+            Session::put('id', $personid);
 
             $addid = DB::table('fss_Address')->insertGetId(
                 ['addstreet' => $street, 'addcity' => $city, 'addpostcode' => $postcode]
@@ -39,11 +40,8 @@ class UserModel extends Model
                 [$personid, $password]);
 
             DB::insert('insert into fss_CustomerAddress(addid, custid) VALUES (?,?)', [$addid, $personid]);
-
-            echo 'done';
         }
-
-            return redirect()->route('films');
+            return redirect()->route('account.insert');
     }
 
     public function checkDB($login, $password) { // checking login details
@@ -65,7 +63,6 @@ class UserModel extends Model
             }
             else {
                 echo "incorrect password";
-                $isLogged = false;
             }
         }
     }
@@ -83,6 +80,7 @@ class UserModel extends Model
             Session::put('userstreet', DB::select('select addstreet from fss_Address where addid='.$straddid)[0]->addstreet);
             Session::put('usercity', DB::select('select addcity from fss_Address where addid='.$straddid)[0]->addcity);
             Session::put('userpostcode', DB::select('select addpostcode from fss_Address where addid='.$straddid)[0]->addpostcode);
+            $this->carddetails();
         }
     }
 
@@ -123,5 +121,63 @@ class UserModel extends Model
             Session::put('userstreet', Session::get('newpostcode'));
             Session::remove('newpostcode');
         }
+    }
+
+    public function history() {
+        $purchases = $this->getpayid();
+        echo "<br><center>";
+        echo "<div class='col'>";
+        while ($row = mysqli_fetch_assoc($purchases)) {
+            foreach ($row as $field => $value) {
+                $basketcontents = DB::select('select fss_Payment.amount, fss_Payment.paydate from fss_Payment inner join fss_OnlinePayment fP on fss_Payment.payid = fP.payid where fP.payid='. $value);
+                echo "<div class='row'><p>" . $basketcontents[0]->paydate . ' || <b>£' . $basketcontents[0]->amount . "</b></p></div></>";
+                for ($num=0; $num<count((array)$basketcontents); $num++) {
+                    echo "<div class='row'>";
+                    $films = DB::select('select filmid from fss_FilmPurchase where payid=' . $value);
+                    for ($y=0; $y<count((array)$films); $y++) {
+                            $film = (new FilmsModel)->get($films[$y]->filmid)[0]->filmtitle;
+                            echo "<div class='col'><p>" . $film . "</p></div><br>";
+                    }
+                    echo "</div><hr>";
+                }
+            }
+            }
+        echo "</div></center>";
+    }
+
+    public function getpayid() {
+        $payid = "select payid from fss_OnlinePayment where custid=" . Session::get('id');
+        $conn = mysqli_connect('127.0.0.1', 'root', 'root', 'FilmStore', '8889');
+        $purchases = mysqli_query($conn, $payid);
+        return $purchases;
+    }
+
+    public function carddetails() {
+        Session::start();
+        if (Session::exists('card')) {
+            Session::forget('card');
+        }
+
+        $card = (array) DB::select('select cno, ctype, cexpr from fss_CardDetails where cardid=' . Session::get('id'));
+        if (count($card) == 0) {
+            return redirect('/user/register/card');
+        }
+        else {
+            Session::put('card', $card);
+        }
+    }
+
+    public function insertcard($cardno, $ctype, $expdate) {
+        Session::start();
+        $id = Session::get('id');
+        if (Session::exists('card')) {
+            $card = Session::get('card');
+            DB::update('update fss_CardDetails set cno=\'' . $card[0]->cno .'\', ctype=\''. $card[0]->ctype . '\', cexpr=\''. $card[0]->cexpr . '\' where cardid='.$id);
+        }
+        else {
+            DB::insert('insert into fss_CardDetails(cardid, cno, ctype, cexpr) values (?, ?, ?, ?)', [$id, $cardno, $ctype, $expdate]);
+        }
+        Session::remove('card');
+        $this->carddetails();
     }
 }

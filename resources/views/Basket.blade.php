@@ -15,17 +15,38 @@
 <div class="row">
     <div class="col-3"></div>
     <div class="col">
-        <form method="post" action="{{ route('basket.clear') }}">
+        <form>
             <input type = "hidden" name = "_token" value = "<?php use Illuminate\Support\Facades\Session;echo csrf_token(); ?>">
-            <input type="submit" class="btn btn-secondary" value="Clear Basket">
+            <center>
+                <h1>Basket</h1>
+                <br>
             <?php
             Session::start();
+            if (Session::exists('total')) {
+                Session::forget('total');
+            }
             $basket = (array) Session::get('basket');
             for ($x=1; $x<count($basket)+1; $x++) {
-                echo $x . "   -   " . $basket[$x][0]->filmtitle;
+                echo "<hr>";
+                echo $x . "   ||   " . $basket[$x][0]->filmtitle . "   ||   " . $basket[$x][0]->price;
+                echo "<br>";
+                }
+            echo "<hr>";
+            $total = 0;
+            for ($i=1; $i<count($basket)+1; $i++) {
+                $total = $total + $basket[$i][0]->price;
+            }
+            echo "<br><br><b>Total:</b> <u>£" . $total . "</u><br>";
+            if ($total > 0) {
+                Session::put('total', $total);
             }
             ?>
+                <br><br>
+                <a href="/basket/clear" role="button" class="btn btn-secondary">Clear Basket</a>
+                <a href="/basket/purchase" role="button" class="btn btn-primary">Purchase</a>
+            </center>
         </form>
+
     </div>
     <div class="col-3"></div>
 </div>

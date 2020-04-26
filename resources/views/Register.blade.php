@@ -15,25 +15,22 @@
 <br><br>
 <div class="row">
     <div class="col"></div>
-<form action="/user/register" method="post">
+<form method="post" action="{{route('register.insert')}}">
 
     <input type = "hidden" name = "_token" value = "<?php echo csrf_token(); ?>">
 
     <div class="col">
-        <p><?php if(DB::connection()->getDatabaseName())
-            {
-                echo "connected successfully to database ".DB::connection()->getDatabaseName();
-            } ?></p>
+        <br><br>
         <h1>Register</h1>
         <div class="row">
             <label class="label col-md control-label">Name
-                <input type="text" class="form-control" name="name" placeholder="Name" required>
+                <input type="text" class="form-control" name="name" placeholder="Name"  pattern="[A-Za-z\s]+" required>
             </label>
         </div>
 
         <div class="row">
             <label class="label col-md control-label">Phone
-                <input type="tel" class="form-control" name="phone" placeholder="Phone" required>
+                <input type="tel" class="form-control" name="phone" placeholder="Phone" pattern="^\s*\(?(020[7,8]{1}\)?[ ]?[1-9]{1}[0-9{2}[ ]?[0-9]{4})|(0[1-8]{1}[0-9]{3}\)?[ ]?[1-9]{1}[0-9]{2}[ ]?[0-9]{3})\s*$" required>
             </label>
         </div>
 
@@ -51,19 +48,19 @@
 
         <div class="row">
             <label class="label col-md control-label">Street
-                <input type="text" class="form-control" name="street" placeholder="Street" required>
+                <input type="text" class="form-control" name="street" placeholder="Street" pattern="[0-9A-Za-z\s]+" required>
             </label>
         </div>
 
         <div class="row">
             <label class="label col-md control-label">City
-                <input type="text" class="form-control" name="city" placeholder="City" required>
+                <input type="text" class="form-control" name="city" placeholder="City" pattern="[A-Za-z\s]+" required>
             </label>
         </div>
 
         <div class="row">
             <label class="label col-md control-label">Postcode
-                <input type="text" class="form-control" name="postcode" placeholder="Postcode">
+                <input type="text" class="form-control" name="postcode" placeholder="Postcode" pattern="[A-Za-z]{1,2}[0-9Rr][0-9A-Za-z]? [0-9][ABD-HJLNP-UW-Zabd-hjlnp-uw-z]{2}" >
             </label>
         </div>
 

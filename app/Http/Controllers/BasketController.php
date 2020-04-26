@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\BasketModel;
 use App\FilmsModel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
@@ -44,7 +45,27 @@ class BasketController extends Controller
 
     public function clear() {
         Session::start();
-        Session::remove('basket');
+        if (Session::exists('basket')) {
+            Session::remove('basket');
+        }
+        if (Session::exists('total')) {
+            Session::remove('total');
+        }
         return redirect()->route('basket');
+    }
+
+    public function purchase() {
+        Session::start();
+        if ((Session::exists('total'))&&((Session::exists('card')))) {
+            (new BasketModel)->store();
+            return view('orderconfirmation');
+        }
+        else if ((!Session::exists('total'))&&((Session::exists('card')))) {
+            return redirect()->route('basket');
+        }
+        else if ((Session::exists('total'))&&((!Session::exists('card')))) {
+            return redirect()->route('account.insert');
+        }
+
     }
 }
